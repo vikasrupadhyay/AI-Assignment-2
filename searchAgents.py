@@ -288,6 +288,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.corner_count=0
 
     def getStartState(self):
         """
@@ -295,6 +296,8 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        #print self.startingPosition
+        return (self.startingPosition)
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -302,6 +305,22 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        #print self.corners
+
+        node = state
+        #print node
+        #print self.corner_count
+        if(node is self.corners):
+            li = list(self.corners)
+            li.remove(node)
+            self.corners=tuple(li)
+        if(len(self.corners)==0):
+            return True
+        else:
+            return False
+
+
+
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -319,12 +338,21 @@ class CornersProblem(search.SearchProblem):
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
+            x,y = state
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            #print "X",nextx,"Y",nexty
 
-            "*** YOUR CODE HERE ***"
+            hitsWall = self.walls[nextx][nexty]
+            if hitsWall is False:
+                node = (nextx,nexty)
+                #print node
+                #print action
+                successors.append([node,action,1])
+        #print successors
+
+
+        "*** YOUR CODE HERE ***"
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
