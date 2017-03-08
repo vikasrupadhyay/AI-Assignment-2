@@ -112,7 +112,7 @@ def depthFirstSearch(problem):
                 if l not in visited:
                     stack.push([l, path + [p], c])
 
-    print path
+    #print path
 
     return path
 
@@ -139,6 +139,7 @@ def breadthFirstSearch(problem):
 
         else:
             if place not in visited:
+                visited.add(place)
                 child = problem.getSuccessors(place)
 
                 for l, p, c in child:
@@ -146,7 +147,7 @@ def breadthFirstSearch(problem):
                         Queue.push([l, path + [p], c])
                         visited.add(place)
 
-    print path
+   # print path
 
     return path
     util.raiseNotDefined()
@@ -158,39 +159,35 @@ def uniformCostSearch(problem):
 
     path_cost =0
     priorityqueue = util.PriorityQueue()
-    visited=[]
+    visited=set()
     steps=[]
-    priorityqueue.push([problem.getStartState(),steps,100], 0)
+    priorityqueue.push([problem.getStartState(),steps,0], 0)
     while not priorityqueue.isEmpty():
         node = priorityqueue.pop()
 
         #steps = node_and_steps[1]
         #print len(node)
-        print node
+        #print node
         steps = node[1]
+        #visited.append(node[0])
         #print steps
         if problem.isGoalState(node[0]):
             print "Done"
             return steps
         else:
-            visited.append(node[0])
+            if node[0] not in visited:
+
+                visited.add(node[0])
             #print visited
-            for l,p,c in problem.getSuccessors(node[0]):
-                if l not in visited:
-                    priorityqueue.push([l,steps+[p],c],problem.getCostOfActions(steps))
-                    visited.append(l)
+                for l,p,c in problem.getSuccessors(node[0]):
+                    if l not in visited:
+
+                        priorityqueue.push([l,steps+[p],c], problem.getCostOfActions(steps +[p]))
+                        #visited.add(l)
+
+                #print problem.getCostOfActions(steps+[p])
 
     print steps
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -199,11 +196,44 @@ def nullHeuristic(state, problem=None):
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
+
+
     return 0
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    path_cost =0
+    priorityqueue = util.PriorityQueue()
+    visited=set()
+    steps=[]
+    priorityqueue.push([problem.getStartState(),steps,0], 0+heuristic(problem.getStartState(),problem))
+    while not priorityqueue.isEmpty():
+        node = priorityqueue.pop()
+
+        #steps = node_and_steps[1]
+        #print len(node)
+        #print node
+        steps = node[1]
+        #visited.append(node[0])
+        #print steps
+        if problem.isGoalState(node[0]):
+            print "Done"
+            return steps
+        else:
+            if node[0] not in visited:
+
+                visited.add(node[0])
+            #print visited
+                for l,p,c in problem.getSuccessors(node[0]):
+                    if l not in visited:
+                        temp = problem.getCostOfActions(steps+[p])
+                        priorityqueue.push([l,steps+[p],c],temp + heuristic(l,problem))
+                        #visited.add(l)
+
+                #print problem.getCostOfActions(steps+[p])
+
+    print steps
     util.raiseNotDefined()
 
 
