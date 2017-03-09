@@ -314,7 +314,7 @@ class CornersProblem(search.SearchProblem):
         #print self.corner_count
         if(node in self.corners and node not in self.visitedcorners):
             self.visitedcorners.append(node)
-            print node
+            #print node
         flag=True
         for i in range(0,4):
             if False in visitednodes[i]:
@@ -517,8 +517,45 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
-    "*** YOUR CODE HERE ***"
+    # currLoc = state[0]
+    # currGrid = state[1]
+    # food = currGrid.asList()
+    # maxDistance = 0
+    # total =0
+    # mtotal =0
+    # maxd=0
+    #
+    # maxnode=currLoc
+    # for i in food:
+    #     manhattanDistance = abs(i[0] - currLoc[0]) + abs(i[1] - currLoc[1])
+    #     if manhattanDistance > maxDistance:
+    #         maxDistance = manhattanDistance
+    #
+    #
+    #         madist = mazeDistance(i,position,problem.startingGameState)
+    #         if (madist < madist):
+    #             maxd = madist
+    #         total = maxd + maxDistance
+    #
+    #         if(total > mtotal):
+    #             mtotal = total
+    #
+    # print total
+    # return mtotal
+    food_list = foodGrid.asList()
+    distances = []
+    
+    for cell in food_list:
+        distances.append((util.manhattanDistance(position, cell), cell))
+    distances.sort()
+
+    if len(distances) > 0:
+        return mazeDistance(position, distances[-1][1], problem.startingGameState)
     return 0
+
+
+
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"

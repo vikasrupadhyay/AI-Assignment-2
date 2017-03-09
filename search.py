@@ -100,7 +100,7 @@ def depthFirstSearch(problem):
         place, path, cost = stack.pop()
         # print path
         if (problem.isGoalState(place)):
-            print "done"
+            #print "done"
             break
         elif place in visited:
             continue
@@ -133,7 +133,7 @@ def breadthFirstSearch(problem):
         place, path, cost = Queue.pop()
 
         if (problem.isGoalState(place)):
-            print "done"
+            #print "done"
             break
 
 
@@ -147,7 +147,7 @@ def breadthFirstSearch(problem):
                         Queue.push([l, path + [p], c])
                         visited.add(place)
 
-    print path
+    #print path
 
     return path
     util.raiseNotDefined()
@@ -172,7 +172,7 @@ def uniformCostSearch(problem):
         #visited.append(node[0])
         #print steps
         if problem.isGoalState(node[0]):
-            print "Done"
+            #print "Done"
             return steps
         else:
             if node[0] not in visited:
@@ -187,7 +187,7 @@ def uniformCostSearch(problem):
 
                 #print problem.getCostOfActions(steps+[p])
 
-    print steps
+    #print steps
 
 
 
@@ -218,7 +218,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         #visited.append(node[0])
         #print steps
         if problem.isGoalState(node[0]):
-            print "Done"
+            #print "Done"
             return steps
         else:
             if node[0] not in visited:
@@ -233,7 +233,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
                 #print problem.getCostOfActions(steps+[p])
 
-    print steps
+    #print steps
     util.raiseNotDefined()
 
 
