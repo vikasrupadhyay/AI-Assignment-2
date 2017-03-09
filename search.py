@@ -147,7 +147,7 @@ def breadthFirstSearch(problem):
                         Queue.push([l, path + [p], c])
                         visited.add(place)
 
-   # print path
+    print path
 
     return path
     util.raiseNotDefined()

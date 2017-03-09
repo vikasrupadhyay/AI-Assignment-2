@@ -289,6 +289,7 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
         self.corner_count=0
+        self.visitedcorners =[]
 
     def getStartState(self):
         """
@@ -297,7 +298,7 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
         #print self.startingPosition
-        return (self.startingPosition)
+        return (self.startingPosition, ((self.corners[0],False),(self.corners[1],False),(self.corners[2],False),(self.corners[3],False)))
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -307,18 +308,19 @@ class CornersProblem(search.SearchProblem):
         "*** YOUR CODE HERE ***"
         #print self.corners
 
-        node = state
+        node = state[0]
+        visitednodes = state[1]
         #print node
         #print self.corner_count
-        if(node is self.corners):
-            li = list(self.corners)
-            li.remove(node)
-            self.corners=tuple(li)
-        if(len(self.corners)==0):
-            return True
-        else:
-            return False
+        if(node in self.corners and node not in self.visitedcorners):
+            self.visitedcorners.append(node)
+            print node
+        flag=True
+        for i in range(0,4):
+            if False in visitednodes[i]:
+                flag=False
 
+        return flag
 
 
         util.raiseNotDefined()
@@ -338,7 +340,9 @@ class CornersProblem(search.SearchProblem):
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
-            x,y = state
+            x,y = state[0]
+            visited=state[1]
+
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
             #print "X",nextx,"Y",nexty
@@ -346,10 +350,19 @@ class CornersProblem(search.SearchProblem):
             hitsWall = self.walls[nextx][nexty]
             if hitsWall is False:
                 node = (nextx,nexty)
-                #print node
-                #print action
-                successors.append([node,action,1])
-        #print successors
+                if node in self.corners:
+                    for i in range(0,4):
+                        if False in visited[i] and node in visited[i]:
+
+                            lis = list(visited)
+                            lis[i] = (node,True)
+                            visited = tuple(lis)
+
+                successors.append([(node,visited),action,1])
+
+    
+
+
 
 
         "*** YOUR CODE HERE ***"
